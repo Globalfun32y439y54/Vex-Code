@@ -19,6 +19,7 @@ motor_group_1_motor_b = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
 motor_group_1 = MotorGroup(motor_group_1_motor_a, motor_group_1_motor_b)
 motor_4 = Motor(Ports.PORT4, GearSetting.RATIO_18_1, True)
 limit_switch_a = Limit(brain.three_wire_port.a)
+bumper_c = Bumper(brain.three_wire_port.c)
 
 
 # wait for rotation sensor to fully initialize
@@ -158,6 +159,12 @@ vexcode_controller_1_precision = 0
 my_x_coordinate = brain.screen.x_position()
 my_y_coordinate = brain.screen.y_position()
 Switch = 0
+Switch2 = 0
+
+
+#Draw
+brain.screen.draw_rectangle(239.5, 119.5, 50, 30)
+#brain.screen.draw_line(288, 120, 288, 148)
 
 
 # Drive Code
@@ -167,10 +174,6 @@ motor_group_1.set_stopping(HOLD)
 motor_group_1.set_velocity(45, PERCENT)
 motor_4.set_velocity(40, PERCENT)
 motor_group_1.spin_for(FORWARD, 60, DEGREES)
-
-
-brain.screen.draw_rectangle(239.5, 119.5, 50, 30)
-#brain.screen.draw_line(288, 120, 288, 148)
 
 
 def when_started1():
@@ -191,16 +194,28 @@ def when_started2():
             Switch = 0
         wait(5, MSEC)
 
-def foo():
-    print("X: ", brain.screen.x_position())
-    print("Y: ", brain.screen.y_position())
+def when_started3():
+    global Switch2
+    while True:
+        if bumper_c.pressing() and Switch2 == 1:
+            motor_group_1.set_velocity(0, PERCENT)
+        wait(5, MSEC)
 
 def when_started4():
-        if brain.screen.x_position() > 239 and brain.screen.x_position() < 289 and brain.screen.y_position() > 120 and brain.screen.y_position() < 148:
-           global myVariable, start, vexcode_brain_precision, vexcode_console_precision 
+    global Switch2
+    while True:
+        if controller_1.buttonL1.pressing():
+            Switch2 = 1
+        elif controller_1.buttonL2.pressing():
+            Switch2 = 0
+            motor_group_1.set_velocity(45, PERCENT)
+        else:
+            Switch2 = 0
+            motor_group_1.set_velocity(45, PERCENT)
+        wait(5, MSEC)
 
 
-ws2 = Thread( when_started2 )
 when_started1()
-ws2 = Thread( when_started4 )
-brain.screen.pressed(foo)
+when_started3()
+ws2 = Thread( when_started2 )
+ws4 = Thread( when_started4 )
