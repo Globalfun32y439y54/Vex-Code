@@ -161,7 +161,7 @@ drivetrain.drive_for(FORWARD, 11, INCHES)
 
 drivetrain.turn_for(LEFT, 110, DEGREES)
 
-drivetrain.drive_for(FORWARD, 28.25, INCHES)
+drivetrain.drive_for(FORWARD, 28.24, INCHES)
 
 motor_group_1.spin_for(FORWARD, -280, DEGREES)
 
@@ -177,4 +177,4 @@ drivetrain.drive_for(REVERSE, 9, INCHES)
 
 drivetrain.turn_for(LEFT, 57, DEGREES)
 
-drivetrain.drive_for(FORWARD, 3, INCHES)
+drivetrain.drive_for(FORWARD, 5, INCHES)
